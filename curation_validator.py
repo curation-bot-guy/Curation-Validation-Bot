@@ -162,7 +162,9 @@ def validate_curation(filename: str) -> tuple[list, list, Optional[bool]]:
                     language_codes.append(x["alpha2"])
                 for language in languages:
                     if language not in language_codes:
-                        if language == "sp":
+                        if ',' in language:
+                            errors.append("Language format is invalid. Languages must be separated with semicolons, not commas.")
+                        elif language == "sp":
                             errors.append("The correct ISO 639-1 language code for Spanish is `es`, not `sp`.")
                         elif language == "ge":
                             errors.append("The correct ISO 639-1 language code for German is `de`, not `ge`.")
@@ -172,6 +174,8 @@ def validate_curation(filename: str) -> tuple[list, list, Optional[bool]]:
                             errors.append("The correct ISO 639-1 language code for Korean is `ko`, not `kr`.")
                         elif language == "ch":
                             errors.append("The correct ISO 639-1 language code for Chinese is `zh`, not `ch`.")
+                        elif language == "cn":
+                            errors.append("The correct ISO 639-1 language code for Chinese is `zh`, not `cn`.")
                         elif language == "iw":
                             errors.append("The correct ISO 639-1 language code for Hebrew is `he`, not `iw`.")
                         elif language == "cz":
