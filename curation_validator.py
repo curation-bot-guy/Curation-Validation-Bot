@@ -184,6 +184,8 @@ def validate_curation(filename: str) -> tuple[list, list, Optional[bool]]:
                 for x in list_of_language_codes:
                     language_codes.append(x["alpha2"])
                 for language in languages:
+                    if language is False:
+                        language = "no"
                     if language not in language_codes:
                         if language == "sp":
                             errors.append("The correct ISO 639-1 language code for Spanish is `es`, not `sp`.")
