@@ -172,20 +172,19 @@ def validate_curation(filename: str) -> tuple[list, list, Optional[bool]]:
                 date_regex = re.compile(r"^\d{4}(-\d{2}){0,2}$")
                 if not date_regex.match(date_string):
                     errors.append(f"Release date {date_string} is incorrect. Release dates should always be in `YYYY-MM-DD` format.")
-
-        language_properties: tuple[str, bool] = ("Languages", bool(props.get("Languages")))
+        language_properties: tuple[str, bool] = ("Languages", props.get("Languages") is not None)
         if language_properties[1]:
             with open("language-codes.json") as f:
                 list_of_language_codes: list[dict] = json.load(f)
                 language_str: str = props.get("Languages", "")
+                if language_str is False:
+                    language_str = "no"
                 languages = language_str.split(";")
                 languages = [x.strip() for x in languages]
                 language_codes = []
                 for x in list_of_language_codes:
                     language_codes.append(x["alpha2"])
                 for language in languages:
-                    if language is False:
-                        language = "no"
                     if language not in language_codes:
                         if language == "sp":
                             errors.append("The correct ISO 639-1 language code for Spanish is `es`, not `sp`.")
